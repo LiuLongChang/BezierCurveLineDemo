@@ -125,40 +125,59 @@ class BezierCurveView: UIView {
             self.subviews[0].layer.addSublayer(layer)
             allPoints.add(point)
         }
-
         //坐标连线
-        var path = UIBezierPath()
+        let path = UIBezierPath()
         path.move(to: allPoints[0] as! CGPoint)
         var prePoint:CGPoint! = nil
-
         switch lineType {
         case .Straight:
-
             for idx in 1..<allPoints.count{
                 let point = allPoints[idx]
                 path.addLine(to: point as! CGPoint)
             }
-
         case .Curve:
-
             for idx in 0..<allPoints.count{
                 if idx == 0 {
                     prePoint = allPoints[0] as! CGPoint
                 }else{
-                    var nowPoint = allPoints[idx]
-
+                    let nowPoint = allPoints[idx]
                     path.addCurve(to: nowPoint as! CGPoint, controlPoint1: CGPoint.init(x: (prePoint.x + (nowPoint as! CGPoint).x), y: prePoint.y), controlPoint2: CGPoint.init(x: (prePoint.x+(nowPoint as! CGPoint).x)/2.0, y: (nowPoint as! CGPoint).y))
                     prePoint = nowPoint as! CGPoint;
                 }
             }
-
         default:
             break;
         }
 
-
-
-
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.path = path.cgPath
+        shapeLayer.strokeColor = UIColor.green.cgColor
+        shapeLayer.fillColor = UIColor.clear.cgColor
+        shapeLayer.borderWidth = 2.0
+        self.subviews[0].layer.addSublayer(shapeLayer)
+        //添加目标值文字
+        for idx in 0..<allPoints.count{
+            let label = UILabel()
+            label.textColor = UIColor.purple
+            label.textAlignment = .center
+            label.font = UIFont.systemFont(ofSize: 10)
+            self.subviews[0].addSubview(label)
+            if idx == 0{
+                let nowPoint = allPoints[0]
+                label.text = "\((BezierCurveView.myFrame.height-(nowPoint as! CGPoint).y-Margin)/2.0)"
+                label.frame = CGRect.init(x: (nowPoint as! CGPoint).x-Margin/2.0, y: (nowPoint as! CGPoint).y-20, width: Margin, height: 20)
+                prePoint = nowPoint as! CGPoint
+            }else{
+                let nowPoint:CGPoint = allPoints[idx] as! CGPoint
+                if(nowPoint.y < prePoint.y){//文字置于点上方
+                    label.frame = CGRect.init(x: nowPoint.x-Margin/2.0, y: nowPoint.y-20, width: Margin, height: 20)
+                }else{//文字置于点下方
+                    label.frame = CGRect.init(x: nowPoint.x - Margin/2, y: nowPoint.y, width: Margin, height: 20)
+                }
+                label.text = "\((BezierCurveView.myFrame.height-nowPoint.y-Margin)/2.0)"
+                prePoint = nowPoint
+            }
+        }
     }
 
 
