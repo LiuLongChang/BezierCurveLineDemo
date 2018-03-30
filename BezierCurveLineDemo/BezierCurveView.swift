@@ -118,8 +118,8 @@ class BezierCurveView: UIView {
         let allPoints = NSMutableArray()
         for idx in 0..<targetValues.count{
             let doubleValue = 2*Float(targetValues[idx])!;//目标值放大两倍
-            let x = Margin+Margin*CGFloat(idx+1)
-            let y = BezierCurveView.myFrame.height-Margin-CGFloat(doubleValue)
+            let x = Margin+X_Every_Margin*CGFloat(idx+1)
+            let y = BezierCurveView.myFrame.height-Margin-CGFloat(doubleValue)*15/2.0; 
             let point = CGPoint.init(x: x, y: y)
             var path : UIBezierPath! = nil;
             if idx % 2 == 1 {
