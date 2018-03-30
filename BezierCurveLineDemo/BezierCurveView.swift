@@ -61,8 +61,9 @@ class BezierCurveView: UIView {
         path.addLine(to: CGPoint.init(x: Margin+BezierCurveView.myFrame.width-2*Margin, y: BezierCurveView.myFrame.height-Margin))
 
         //2.添加索引格  X轴
-        for idx in 0..<x_names.count {
-            let x = Margin+Margin*CGFloat(idx+1)
+        for (_,obj) in x_names.enumerated() {
+            let value : CGFloat = CGFloat(Int(obj)!);
+            let x = Margin + X_Every_Margin * value
             let point = CGPoint.init(x: x, y: BezierCurveView.myFrame.height-Margin)
             path.move(to: point)
             path.addLine(to: CGPoint.init(x: point.x, y: point.y-3))
@@ -78,10 +79,13 @@ class BezierCurveView: UIView {
         }
 
         //添加索引格文字 X轴
-        for idx in 0..<x_names.count {
-            let x = Margin+15+X_Every_Margin*CGFloat(idx)
-            let textLabel = UILabel(frame: CGRect.init(x:x, y: BezierCurveView.myFrame.height-Margin, width: Margin, height: 20))
-            if idx % 2 == 1 {textLabel.isHidden = true}
+        for (idx,obj) in x_names.enumerated() {
+            
+            let value : CGFloat = CGFloat(Int(obj)!);
+            
+            let x = Margin+X_Every_Margin*value
+            let textLabel = UILabel(frame: CGRect.init(x:x-Margin/2.0, y: BezierCurveView.myFrame.height-Margin, width: Margin, height: 20))
+            //if idx % 2 == 1 {textLabel.isHidden = true}
             textLabel.textAlignment = .center
             textLabel.text = x_names[idx]
             textLabel.font = UIFont.systemFont(ofSize: 12)
@@ -121,13 +125,12 @@ class BezierCurveView: UIView {
             let x = Margin+X_Every_Margin*CGFloat(idx+1)
             let y = BezierCurveView.myFrame.height-Margin-CGFloat(doubleValue)*15/2.0; 
             let point = CGPoint.init(x: x, y: y)
-            var path : UIBezierPath! = nil;
-            if idx % 2 == 1 {
-                path = UIBezierPath.init(roundedRect: CGRect.init(x: point.x-1, y: point.y-1, width: 0, height: 0), cornerRadius: 2.5)
-            }else{
-                path = UIBezierPath.init(roundedRect: CGRect.init(x: point.x-1, y: point.y-1, width: 2.5, height: 2.5), cornerRadius: 2.5)
-            }
-
+            var path : UIBezierPath! = UIBezierPath.init(roundedRect: CGRect.init(x: point.x-1, y: point.y-1, width: 2.5, height: 2.5), cornerRadius: 2.5);
+//            if idx % 2 == 1 {
+//                path = UIBezierPath.init(roundedRect: CGRect.init(x: point.x-1, y: point.y-1, width: 0, height: 0), cornerRadius: 2.5)
+//            }else{
+//                path = UIBezierPath.init(roundedRect: CGRect.init(x: point.x-1, y: point.y-1, width: 2.5, height: 2.5), cornerRadius: 2.5)
+//            }
             let layer = CAShapeLayer()
             layer.strokeColor = UIColor.purple.cgColor
             layer.fillColor = UIColor.purple.cgColor
