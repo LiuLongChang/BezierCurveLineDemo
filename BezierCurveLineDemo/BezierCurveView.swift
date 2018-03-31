@@ -136,22 +136,19 @@ class BezierCurveView: UIView {
             self.subviews[0].layer.addSublayer(layer)
             allPoints.add(point)
         }
-        //=============== 蒙层
+        //=============== 蒙层 ===============
         let pathNow = UIBezierPath()
         pathNow.move(to: allPoints[0] as! CGPoint)
         for idx in 1..<allPoints.count{
             let point = allPoints[idx]
             pathNow.addLine(to: point as! CGPoint)
         }
-        
         let pointLast = Float(xNames.last!);
         let point = CGPoint.init(x: Margin+X_Every_Margin*CGFloat(pointLast!), y: BezierCurveView.myFrame.height-Margin);
         pathNow.addLine(to: point);
-        
         let pointFirst = Float(xNames.first!);
         let point2 = CGPoint.init(x: Margin+X_Every_Margin*CGFloat(pointFirst!), y: BezierCurveView.myFrame.height-Margin);
         pathNow.addLine(to: point2);
-        
         let shapeLayerNow = CAShapeLayer()
         shapeLayerNow.path = pathNow.cgPath
         shapeLayerNow.lineWidth = 0.01
@@ -159,7 +156,8 @@ class BezierCurveView: UIView {
         shapeLayerNow.fillColor = UIColor.init(red: 238/255.0, green: 246/255.0, blue: 255/255.0, alpha: 1).cgColor;
         shapeLayerNow.borderWidth = 0.01
         self.subviews[0].layer.addSublayer(shapeLayerNow)
-        //坐标连线
+        
+        //坐标连线===========================
         let path = UIBezierPath()
         path.move(to: allPoints[0] as! CGPoint)
         var prePoint:CGPoint! = nil
@@ -191,10 +189,6 @@ class BezierCurveView: UIView {
         shapeLayer.fillColor = UIColor.clear.cgColor
         shapeLayer.borderWidth = 2.0
         self.subviews[0].layer.addSublayer(shapeLayer)
-        
-        
-        
-        
         //添加目标值文字
         for (idx,_) in allPoints.enumerated(){
             let doubleValue = Float(targetValues[idx])!;
