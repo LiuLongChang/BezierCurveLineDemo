@@ -121,19 +121,17 @@ class BezierCurveView: UIView {
         //获取目标值点坐标
         let allPoints = NSMutableArray()
         for idx in 0..<targetValues.count{
-            let doubleValue = 2*Float(targetValues[idx])!;//目标值放大两倍
-            let x = Margin+X_Every_Margin*CGFloat(idx+1)
-            let y = BezierCurveView.myFrame.height-Margin-CGFloat(doubleValue)*15/2.0; 
+            let xName = "\(xNames[idx])";
+            let xNameValue = Float(xName);
+            
+            let doubleValue = Float(targetValues[idx])!;
+            let x = Margin+X_Every_Margin*CGFloat(xNameValue!)
+            let y = BezierCurveView.myFrame.height-Margin-CGFloat(doubleValue)*15;
             let point = CGPoint.init(x: x, y: y)
-            var path : UIBezierPath! = UIBezierPath.init(roundedRect: CGRect.init(x: point.x-1, y: point.y-1, width: 2.5, height: 2.5), cornerRadius: 2.5);
-//            if idx % 2 == 1 {
-//                path = UIBezierPath.init(roundedRect: CGRect.init(x: point.x-1, y: point.y-1, width: 0, height: 0), cornerRadius: 2.5)
-//            }else{
-//                path = UIBezierPath.init(roundedRect: CGRect.init(x: point.x-1, y: point.y-1, width: 2.5, height: 2.5), cornerRadius: 2.5)
-//            }
+            let path : UIBezierPath! = UIBezierPath.init(roundedRect: CGRect.init(x: point.x-2.5, y: point.y-2.5, width: 2.5*2, height: 2.5*2), cornerRadius: 2.5);
             let layer = CAShapeLayer()
-            layer.strokeColor = UIColor.purple.cgColor
-            layer.fillColor = UIColor.purple.cgColor
+            layer.strokeColor = UIColor.init(red: 54/255.0, green: 153/255.0, blue: 255/255.0, alpha: 1).cgColor
+            layer.fillColor = UIColor.init(red: 54/255.0, green: 153/255.0, blue: 255/255.0, alpha: 1).cgColor
             layer.path = path.cgPath
             self.subviews[0].layer.addSublayer(layer)
             allPoints.add(point)
@@ -164,28 +162,23 @@ class BezierCurveView: UIView {
 
         let shapeLayer = CAShapeLayer()
         shapeLayer.path = path.cgPath
-        shapeLayer.strokeColor = UIColor.green.cgColor
+        //path.lineWidth = 4;
+        shapeLayer.lineWidth = 2.5;
+        shapeLayer.strokeColor = UIColor.init(red: 54/255.0, green: 153/255.0, blue: 255/255.0, alpha: 1).cgColor
         shapeLayer.fillColor = UIColor.clear.cgColor
         shapeLayer.borderWidth = 2.0
         self.subviews[0].layer.addSublayer(shapeLayer)
         //添加目标值文字
-        for idx in 0..<allPoints.count{
+        for (idx,_) in allPoints.enumerated(){
+            let doubleValue = Float(targetValues[idx])!;
             let label = UILabel()
             label.textColor = UIColor.purple
             label.textAlignment = .center
             label.font = UIFont.systemFont(ofSize: 10)
             self.subviews[0].addSubview(label)
-
-            if idx % 2 == 0 {
-                label.isHidden = false
-            }else{
-                label.isHidden = true
-            }
-
-
             if idx == 0{
                 let nowPoint = allPoints[0]
-                label.text = "\((BezierCurveView.myFrame.height-(nowPoint as! CGPoint).y-Margin)/2.0)"
+                label.text = "\(doubleValue)"
                 label.frame = CGRect.init(x: (nowPoint as! CGPoint).x-Margin/2.0, y: (nowPoint as! CGPoint).y-20, width: Margin, height: 20)
                 prePoint = nowPoint as! CGPoint
             }else{
@@ -195,8 +188,7 @@ class BezierCurveView: UIView {
                 }else{//文字置于点下方
                     label.frame = CGRect.init(x: nowPoint.x - Margin/2, y: nowPoint.y, width: Margin, height: 20)
                 }
-                label.text = "\((BezierCurveView.myFrame.height-nowPoint.y-Margin)/2.0)"
-                prePoint = nowPoint
+                label.text = "\(doubleValue)";prePoint = nowPoint;
             }
         }
     }

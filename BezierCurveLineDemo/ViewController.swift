@@ -18,7 +18,7 @@ class ViewController: UIViewController {
         
         let x_names = ["1","3","5","7","9"];
 
-        let targets = ["2","4","6","8","10","12","14"];
+        let targets = ["2","4","6","8","10"];
 
 
         
