@@ -113,6 +113,68 @@ class BezierCurveView: UIView {
         self.subviews[0].layer.addSublayer(shapeLayer)
     }
 
+    //画条形图
+    func drawBarChartView(itenName:[String],targetValues:[String]){
+        
+        for (idx,obj) in itenName.enumerated(){
+            let label = UILabel();label.textColor = UIColor.init(red: 51/255.0, green: 51/255.0, blue: 51/255.0, alpha: 1)
+            label.font = UIFont.init(name: "PingFangSC-Regular", size: 12)
+            label.textAlignment = .left
+            label.frame = CGRect.init(x: 20, y: 10*idx+idx*15, width: 85, height: 15)
+            label.text = obj;label.textColor = UIColor.black
+            let pointOfCharItem = CGPoint.init(x: label.frame.maxX+10, y: 10*CGFloat(idx)+CGFloat(idx)*15+7.5)
+            self.addSubview(label)
+            
+            
+            let pathNow = UIBezierPath()
+            pathNow.move(to: pointOfCharItem)
+            let pointOfCharItem0 = CGPoint.init(x: pointOfCharItem.x+200, y: pointOfCharItem.y)
+            pathNow.addLine(to: pointOfCharItem0)
+            
+            let shapeLayerNow = CAShapeLayer()
+            shapeLayerNow.path = pathNow.cgPath
+            shapeLayerNow.lineWidth = 5
+            shapeLayerNow.lineCap = "round"
+            shapeLayerNow.strokeColor = UIColor.init(red: 230/255.0, green: 235/255.0, blue: 245/255.0, alpha: 1).cgColor;
+            shapeLayerNow.fillColor = UIColor.init(red: 230/255.0, green: 235/255.0, blue: 245/255.0, alpha: 1).cgColor;
+            shapeLayerNow.borderWidth = 5
+            self.subviews[0].layer.addSublayer(shapeLayerNow)
+            
+            let targetValue : NSString = NSString.init(string:"\(targetValues[idx])");
+            let range : NSRange = targetValue.range(of: "%")
+            let targetValueNoPercent = targetValue.substring(to: range.location)
+            let targetValueNoPercentFloat : Float = Float(targetValueNoPercent)!/100.0;
+            
+            let pathTarget = UIBezierPath()
+            pathTarget.move(to: pointOfCharItem)
+            let pointOfCharItemTarget = CGPoint.init(x: pointOfCharItem.x + CGFloat(Float(200)*targetValueNoPercentFloat), y: pointOfCharItem.y)
+            pathTarget.addLine(to: pointOfCharItemTarget)
+            
+            let shapeLayerTarget = CAShapeLayer()
+            shapeLayerTarget.path = pathTarget.cgPath
+            shapeLayerTarget.lineWidth = 5
+            shapeLayerTarget.lineCap = "round"
+            shapeLayerTarget.strokeColor = UIColor.init(red: 102/255.0, green: 201/255.0, blue: 255/255.0, alpha: 1).cgColor;
+            shapeLayerTarget.fillColor = UIColor.init(red: 102/255.0, green: 201/255.0, blue: 255/255.0, alpha: 1).cgColor;
+            shapeLayerTarget.borderWidth = 5
+            self.subviews[0].layer.addSublayer(shapeLayerTarget)
+            
+            
+            let labelPercent = UILabel();labelPercent.font = UIFont.init(name: "PingFangSC-Regular", size: 12);
+            labelPercent.textColor = UIColor.init(red: 51/255.0, green: 51/255.0, blue: 51/255.0, alpha: 1);
+            labelPercent.frame = CGRect.init(x: pointOfCharItem.x+10+200, y: 10*CGFloat(idx)+CGFloat(idx)*15, width: 40, height: 15)
+            labelPercent.text = targetValues[idx];
+            self.addSubview(labelPercent)
+        }
+        
+        
+        
+        
+        
+    }
+    
+    
+    
 
     //画折线图
     func drawLineChartView(xNames:[String],targetValues:[String],lineType:LineType){
